@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <title>Document</title>
+  </head>
+  <body class="bg-slate-900 h-screen flex flex-col m-2">
+    <div class="flex gap-2 my-6 justify-center">
+      <div
+        class="flex rounded-[8px] w-96 border-2 border-slate-950 bg-white overflow-hidden px-2"
+      >
+        <input
+          type="text"
+          placeholder="Search ..."
+          class="h-[40px] w-[95%] p-2 bg-transparent outline-none"
+        />
+      </div>
+      <i
+        class="fa-solid fa-plus text-emerald-700 text-xl border-2 rounded-lg p-2 add-note"
+        title="New note"
+      ></i>
+      <i
+        class="fa-solid fa-paint-roller text-indigo-700 text-xl border-2 rounded-lg p-2"
+        title="theme"
+        id="changeTheme"
+      ></i>
+      <input
+        type="color"
+        class="text-indigo-700 text-xl border-2 rounded-lg hidden"
+        id="palette"
+      />
+    </div>
+    <div class="flex flex-wrap gap-2 justify-center m-2" id="parent"></div>
+  </body>
+  <script>
+    let paintRoller = document.querySelector("#changeTheme");
+    let color = document.querySelector("#palette");
+
+    let noteCollection = document.querySelector("#parent");
+
+    color.addEventListener("change", changeBg);
+
+    function changeBg() {
+      let body = document.querySelector("body");
+      body.style.backgroundColor = color.value;
+      paintRoller.style.display = "block";
+      color.style.display = "none";
+    }
+
+    paintRoller.addEventListener("click", showPalette);
+
+    function showPalette() {
+      paintRoller.style.display = "none";
+      color.style.display = "block";
+    }
+  </script>
+</html>
