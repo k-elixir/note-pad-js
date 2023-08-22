@@ -23,7 +23,8 @@
       </div>
       <i
         class="fa-solid fa-plus text-emerald-700 text-xl border-2 rounded-lg p-2 add-note"
-        title="New note"
+        title="New Note"
+        id="add"
       ></i>
       <i
         class="fa-solid fa-paint-roller text-indigo-700 text-xl border-2 rounded-lg p-2"
@@ -36,13 +37,20 @@
         id="palette"
       />
     </div>
-    <div class="flex flex-wrap gap-2 justify-center m-2" id="parent"></div>
+    <div class="flex flex-wrap gap-2 justify-center m-2" id="parent">
+      <div class="flex basis-36 flex-wrap">
+        <i class="fa-solid fa-xmark text-red-900 absolute text-xl ms-1"></i>
+        <textarea class="rounded-lg" type="text"> </textarea>
+      </div>
+    </div>
   </body>
   <script>
     let paintRoller = document.querySelector("#changeTheme");
     let color = document.querySelector("#palette");
-
     let noteCollection = document.querySelector("#parent");
+    let addNote = document.querySelector("#add");
+
+    addNote.addEventListener;
 
     color.addEventListener("change", changeBg);
 
