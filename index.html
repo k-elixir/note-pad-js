@@ -4,11 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.tailwindcss.com" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
     <title>Document</title>
+    <style>
+      #newDiv {
+        display: flex;
+        flex-wrap: wrap;
+        flex-basis: 144px;
+      }
+    </style>
   </head>
   <body class="bg-slate-900 h-screen flex flex-col m-2">
     <div class="flex gap-2 my-6 justify-center">
@@ -21,11 +29,7 @@
           class="h-[40px] w-[95%] p-2 bg-transparent outline-none"
         />
       </div>
-      <i
-        class="fa-solid fa-plus text-emerald-700 text-xl border-2 rounded-lg p-2 add-note"
-        title="New Note"
-        id="add"
-      ></i>
+
       <i
         class="fa-solid fa-paint-roller text-indigo-700 text-xl border-2 rounded-lg p-2"
         title="theme"
@@ -37,35 +41,115 @@
         id="palette"
       />
     </div>
-    <div class="flex flex-wrap gap-2 justify-center m-2" id="parent">
-      <div class="flex basis-36 flex-wrap">
-        <i class="fa-solid fa-xmark text-red-900 absolute text-xl ms-1"></i>
-        <textarea class="rounded-lg" type="text"> </textarea>
+    <div class="flex flex-wrap gap-4 justify-center m-2">
+      <div class="flex basis-36">
+        <textarea class="rounded-lg pe-6 h-24"> </textarea>
+        <i
+          class="fa-solid fa-plus text-emerald-700 text-xl -ms-6"
+          title="New Note"
+          id="add"
+        ></i>
       </div>
+      <div class="gap-4" id="newDiv"></div>
     </div>
   </body>
   <script>
     let paintRoller = document.querySelector("#changeTheme");
-    let color = document.querySelector("#palette");
-    let noteCollection = document.querySelector("#parent");
-    let addNote = document.querySelector("#add");
-
-    addNote.addEventListener;
-
-    color.addEventListener("change", changeBg);
-
-    function changeBg() {
-      let body = document.querySelector("body");
-      body.style.backgroundColor = color.value;
-      paintRoller.style.display = "block";
-      color.style.display = "none";
-    }
-
-    paintRoller.addEventListener("click", showPalette);
-
-    function showPalette() {
+    paintRoller.addEventListener("click", function () {
       paintRoller.style.display = "none";
       color.style.display = "block";
-    }
+    });
+
+    let color = document.querySelector("#palette");
+    color.addEventListener("input", function () {
+      document.querySelector("body").style.backgroundColor = color.value;
+      paintRoller.style.display = "block";
+      color.style.display = "none";
+    });
+
+    let notes = [];
+    let textarea = document.querySelector("textarea");
+    document.querySelector("#add").addEventListener("click", function () {
+      if (textarea.value !== "") {
+        notes.push({
+          id: notes.length + 1,
+          text: textarea.value,
+          isDone: false,
+        });
+        updateNotes();
+        textarea.value = "";
+      }
+    });
+
+    let newNoteDiv = document.querySelector("#newDiv");
+
+    let updateNotes = function () {
+      newNoteDiv.innerHTML = "";
+      notes.map(function (note) {
+        // let noteElement = document.createElement("div");
+        // noteElement.classList.add("flex", "basis-36");
+
+        // let noteTextArea = document.createElement("textarea");
+        // noteTextArea.classList.add("rounded-lg", "pe-6", "h-24");
+        // noteTextArea.value = textarea.value;
+        // noteTextArea.id = `note-status-${noteId}`;
+
+        // let noteRemoveButton = document.createElement("i");
+        // noteRemoveButton.classList.add(
+        //   "fa-solid",
+        //   "fa-xmark",
+        //   "text-red-900",
+        //   "text-xl",
+        //   "-ms-6"
+        // );
+        // noteRemoveButton.id = `note-${noteId}`;
+
+        // noteElement.appendChild(noteTextArea);
+        // noteElement.appendChild(noteRemoveButton);
+
+        // newNoteDiv.appendChild(noteElement);
+
+        newNoteDiv.innerHTML += `
+          <div class="flex basis-36">
+
+          <textarea class="rounded-lg pe-6 h-24" id="note-status-${note.id}"> ${note.text} </textarea>
+        <div class="flex flex-col"><i
+            class="fa-solid fa-xmark text-red-900 text-xl -ms-6"
+            id="note-${note.id}"
+          ></i>
+          <i class="fa-solid fa-paintbrush text-l -ms-6" id="divColors"></i>
+          <input class="-ms-7 mt-2" type="checkbox" value=${note.isDone} id="note-status-${note.id}">
+          </div>
+          </div>`;
+
+        let deleteButton = document.querySelector(`#note-${note.id}`);
+        deleteButton.addEventListener("click", () => {
+          removeNote(note.id);
+        });
+        let checkbox = document.querySelector(`#note-status-${note.id}`);
+        let noteTextarea = document.querySelector(`#note-status-${note.id}`);
+        if (note.isDone) {
+          checkbox.setAttribute("checked", true);
+          noteTextarea.style.textDecoration = "line-through";
+        } else {
+          checkbox.removeAttribute("checked");
+          noteTextarea.style.textDecoration = "none";
+        }
+      });
+    };
+
+    let removeNote = noteId => {
+      let alteredNotes = notes.filter(note => note.id !== noteId);
+      notes = alteredNotes;
+      updateNotes();
+    };
+
+    let changeNoteStatus = noteId => {
+      let noteIndex = notes.findIndex(note => note.id === noteId);
+      if (noteIndex != -1) {
+        notes[noteIndex].isDone = !notes[noteIndex].isDone;
+        updateNotes();
+      }
+    };
   </script>
 </html>
