@@ -110,7 +110,7 @@
         // newNoteDiv.appendChild(noteElement);
 
         newNoteDiv.innerHTML += `
-          <div class="flex basis-36">
+          <div class="flex">
 
           <textarea class="rounded-lg pe-6 h-24" id="note-status-${note.id}"> ${note.text} </textarea>
         <div class="flex flex-col"><i
@@ -130,11 +130,17 @@
         let noteTextarea = document.querySelector(`#note-status-${note.id}`);
         if (note.isDone) {
           checkbox.setAttribute("checked", true);
-          noteTextarea.style.textDecoration = "line-through";
         } else {
           checkbox.removeAttribute("checked");
-          noteTextarea.style.textDecoration = "none";
         }
+
+        // checkbox.addEventListener("change", function () {
+        //   if (this.checked) {
+        //     noteTextarea.style.textDecoration = "line-through";
+        //   } else {
+        //     noteTextarea.style.textDecoration = "none";
+        //   }
+        // });
       });
     };
 
